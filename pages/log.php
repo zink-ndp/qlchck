@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 
-$sql = "select id, ad_name, username from admin_account where username = '".$_POST["usname"]."' and password = '".$_POST["pass"]."'";
+$sql = "select id, name, email, role from staff where username = '".$_POST["usname"]."' and password = '".md5($_POST["pass"])."'";
 
 $result = $conn->query($sql);
 
@@ -31,11 +31,17 @@ if ($result->num_rows > 0) {
   
   //SESSION
   session_start();
-  $_SESSION["name"] = "user";
-  $_SESSION["fullname"] = $row['username'];
+  $_SESSION["name"] = "name";
+  $_SESSION["fullname"] = $row['email'];
   $_SESSION["id"] = $row['id'];
+  $_SESSION["role"] = $row['role'];
   
-  header('Location: dashboard.php');
+  if ($_SESSION["role"] == 1){
+    header('Location: dashboard.php');
+  } else {
+    header('Location: create_bill.php');
+  }
+
   
 } else {
   echo "Error: " . $sql . "<br>" . $conn->error;
