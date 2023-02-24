@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "qlch_cakieng";
+$dbname = "test";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 
-$sql = "select id, name, email, role from staff where username = '".$_POST["usname"]."' and password = '".md5($_POST["pass"])."'";
+$sql = "select nv_id, nv_hoten, nv_email, nv_vaitro from nhan_vien where nv_tendangnhap = '".$_POST["usname"]."' and nv_matkhau = '".$_POST["pass"]."'";
 
 $result = $conn->query($sql);
 
@@ -31,12 +31,12 @@ if ($result->num_rows > 0) {
   
   //SESSION
   session_start();
-  $_SESSION["name"] = "name";
-  $_SESSION["fullname"] = $row['email'];
-  $_SESSION["id"] = $row['id'];
-  $_SESSION["role"] = $row['role'];
+  $_SESSION["name"] = "nv_hoten";
+  $_SESSION["fullname"] = $row['nv_email'];
+  $_SESSION["id"] = $row['nv_id'];
+  $_SESSION["role"] = $row['nv_vaitro'];
   
-  if ($_SESSION["role"] == 1){
+  if ($_SESSION["role"] == 0){
     header('Location: dashboard.php');
   } else {
     header('Location: create_bill.php');
@@ -46,7 +46,7 @@ if ($result->num_rows > 0) {
 } else {
   echo "Error: " . $sql . "<br>" . $conn->error;
   //Tro ve trang dang nhap sau 3 giay
-  header('Refresh: 2;url=sign-in.php');
+  header('Refresh: 4;url=sign-in.php');
 
 }
 
